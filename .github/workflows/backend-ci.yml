@@ -1,0 +1,32 @@
+name: Backend Spring Boot CI
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+    paths:
+      - 'backend/**'
+  push:
+    branches: [ develop, main ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  backend-build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+
+      - name: Grant execute permission for Gradle wrapper
+        working-directory: backend
+        run: chmod +x gradlew
+
+      - name: Build backend
+        working-directory: backend
+        run: ./gradlew build
