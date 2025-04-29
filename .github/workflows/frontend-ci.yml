@@ -1,0 +1,36 @@
+name: Frontend Angular CI
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+    paths:
+      - 'frontend/**'
+  push:
+    branches: [ develop, main ]
+    paths:
+      - 'frontend/**'
+
+jobs:
+  frontend-build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build --if-present
+
+      - name: Test frontend
+        working-directory: frontend
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
