@@ -1,0 +1,122 @@
+# ──────────────────────────────────────────────
+# macOS
+# ──────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ──────────────────────────────────────────────
+# IntelliJ IDEA / Android Studio
+# ──────────────────────────────────────────────
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.idea_modules/
+
+# ──────────────────────────────────────────────
+# Visual Studio Code
+# ──────────────────────────────────────────────
+.vscode/
+*.code-workspace
+.history/
+
+# ──────────────────────────────────────────────
+# Kotlin / JVM / Gradle
+# ──────────────────────────────────────────────
+build/
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# Spring Boot
+HELP.md
+
+# ──────────────────────────────────────────────
+# Android
+# ──────────────────────────────────────────────
+android/local.properties
+android/*.keystore
+android/*.jks
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+android/app/release/
+
+# ──────────────────────────────────────────────
+# Python
+# ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+*.egg-info/
+*.egg
+*.whl
+
+# ──────────────────────────────────────────────
+# Node / JavaScript / TypeScript
+# ──────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm/
+.yarn/
+dist/
+.next/
+.nuxt/
+.output/
+.cache/
+*.tsbuildinfo
+
+# Angular
+.angular/
+
+# ──────────────────────────────────────────────
+# Environment & secrets
+# ──────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# ──────────────────────────────────────────────
+# Logs & temp
+# ──────────────────────────────────────────────
+*.log
+*.tmp
+*.swp
+*.bak
