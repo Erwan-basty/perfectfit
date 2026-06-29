@@ -2,6 +2,9 @@ package com.perfectfit.api
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
@@ -24,8 +27,8 @@ class MeasurementClient(
 
     fun measure(frontImage: MultipartFile, sideImage: MultipartFile, heightCm: Double): Measurements {
         val body = LinkedMultiValueMap<String, Any>().apply {
-            add("front_image", namedResource(frontImage))
-            add("side_image", namedResource(sideImage))
+            add("front_image", filePart(frontImage, "front_image"))
+            add("side_image", filePart(sideImage, "side_image"))
             add("height_cm", heightCm.toString())
         }
 
@@ -38,7 +41,15 @@ class MeasurementClient(
             ?: throw IllegalStateException("Measurement service returned an empty response")
     }
 
-    private fun namedResource(file: MultipartFile) = object : ByteArrayResource(file.bytes) {
-        override fun getFilename() = file.originalFilename ?: "image.jpg"
+    private fun filePart(file: MultipartFile, fieldName: String): HttpEntity<ByteArrayResource> {
+        val filename = file.originalFilename ?: "$fieldName.jpg"
+        val headers = HttpHeaders().apply {
+            contentType = MediaType.IMAGE_JPEG
+            contentDisposition = ContentDisposition.formData().name(fieldName).filename(filename).build()
+        }
+        val resource = object : ByteArrayResource(file.bytes) {
+            override fun getFilename() = filename
+        }
+        return HttpEntity(resource, headers)
     }
 }
