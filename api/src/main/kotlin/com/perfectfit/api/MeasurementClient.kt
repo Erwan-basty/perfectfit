@@ -2,7 +2,6 @@ package com.perfectfit.api
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ByteArrayResource
-import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -27,8 +26,8 @@ class MeasurementClient(
 
     fun measure(frontImage: MultipartFile, sideImage: MultipartFile, heightCm: Double): Measurements {
         val body = LinkedMultiValueMap<String, Any>().apply {
-            add("front_image", filePart(frontImage, "front_image"))
-            add("side_image", filePart(sideImage, "side_image"))
+            add("front_image", filePart(frontImage))
+            add("side_image", filePart(sideImage))
             add("height_cm", heightCm.toString())
         }
 
@@ -41,11 +40,12 @@ class MeasurementClient(
             ?: throw IllegalStateException("Measurement service returned an empty response")
     }
 
-    private fun filePart(file: MultipartFile, fieldName: String): HttpEntity<ByteArrayResource> {
-        val filename = file.originalFilename ?: "$fieldName.jpg"
+    // Spring uses the LinkedMultiValueMap key as the Content-Disposition name automatically.
+    // We only need to set Content-Type so FastAPI recognises the part as a file upload.
+    private fun filePart(file: MultipartFile): HttpEntity<ByteArrayResource> {
+        val filename = file.originalFilename ?: "image.jpg"
         val headers = HttpHeaders().apply {
             contentType = MediaType.IMAGE_JPEG
-            contentDisposition = ContentDisposition.formData().name(fieldName).filename(filename).build()
         }
         val resource = object : ByteArrayResource(file.bytes) {
             override fun getFilename() = filename
