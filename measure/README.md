@@ -93,6 +93,8 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 ```
 
+![Measure service startup](../docs/screenshots/measure-startup.png)
+
 The service is now running at http://localhost:8001.
 
 `--reload` means the server automatically restarts when you edit the code — useful during development.
@@ -105,6 +107,8 @@ Open a **new terminal tab** (keep the service running in the first one) and run:
 curl http://localhost:8001/health
 # {"status":"ok"}
 ```
+
+![Measure health check](../docs/screenshots/measure-health.png)
 
 Or just open http://localhost:8001/health in your browser.
 

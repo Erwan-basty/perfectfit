@@ -59,7 +59,11 @@ docker compose up -d
 
 - `-d` means "run in the background"
 - This downloads a small Postgres image the first time (~70 MB), then starts it
-- The database is now available at `localhost:5432`
+- The database is now available at `localhost:5433`
+
+When it works you'll see:
+
+![Docker compose up](../docs/screenshots/docker-compose-up.png)
 
 **To stop the database later:**
 ```bash
@@ -89,6 +93,8 @@ You'll know it's ready when you see:
 ```
 Started Application in 2.3 seconds
 ```
+
+![API started](../docs/screenshots/api-started.png)
 
 ---
 
