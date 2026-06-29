@@ -1,13 +1,14 @@
 package com.perfectfit.api
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.ByteArrayResource
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
-import org.springframework.util.LinkedMultiValueMap
-import org.springframework.web.client.RestClient
 import org.springframework.web.multipart.MultipartFile
 
 data class Measurements(
@@ -22,34 +23,38 @@ data class Measurements(
 class MeasurementClient(
     @Value("\${measurement.service-url}") private val serviceUrl: String,
 ) {
-    private val client = RestClient.create()
+    private val http = OkHttpClient()
+    private val json = jacksonObjectMapper()
 
     fun measure(frontImage: MultipartFile, sideImage: MultipartFile, heightCm: Double): Measurements {
-        val body = LinkedMultiValueMap<String, Any>().apply {
-            add("front_image", filePart(frontImage))
-            add("side_image", filePart(sideImage))
-            add("height_cm", heightCm.toString())
-        }
+        val body = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart(
+                "front_image",
+                frontImage.originalFilename ?: "front.jpg",
+                frontImage.bytes.toRequestBody("image/jpeg".toMediaType()),
+            )
+            .addFormDataPart(
+                "side_image",
+                sideImage.originalFilename ?: "side.jpg",
+                sideImage.bytes.toRequestBody("image/jpeg".toMediaType()),
+            )
+            .addFormDataPart("height_cm", heightCm.toString())
+            .build()
 
-        return client.post()
-            .uri("$serviceUrl/measure")
-            .contentType(MediaType.MULTIPART_FORM_DATA)
-            .body(body)
-            .retrieve()
-            .body(Measurements::class.java)
+        val request = Request.Builder()
+            .url("$serviceUrl/measure")
+            .post(body)
+            .build()
+
+        val response = http.newCall(request).execute()
+        val responseBody = response.body?.string()
             ?: throw IllegalStateException("Measurement service returned an empty response")
-    }
 
-    // Spring uses the LinkedMultiValueMap key as the Content-Disposition name automatically.
-    // We only need to set Content-Type so FastAPI recognises the part as a file upload.
-    private fun filePart(file: MultipartFile): HttpEntity<ByteArrayResource> {
-        val filename = file.originalFilename ?: "image.jpg"
-        val headers = HttpHeaders().apply {
-            contentType = MediaType.IMAGE_JPEG
+        if (!response.isSuccessful) {
+            throw IllegalStateException("Measurement service error ${response.code}: $responseBody")
         }
-        val resource = object : ByteArrayResource(file.bytes) {
-            override fun getFilename() = filename
-        }
-        return HttpEntity(resource, headers)
+
+        return json.readValue(responseBody)
     }
 }
