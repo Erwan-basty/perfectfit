@@ -59,7 +59,18 @@ You'll know it worked because your terminal prompt will change to show `(.venv)`
 
 > Every time you open a new terminal to work on this service, you need to run the `activate` command again. The virtual environment is only active for the current terminal session.
 
-### Step 4 — Install dependencies
+### Step 4 — Download the pose model
+
+MediaPipe 0.10+ requires a model file that is too large for git (~29 MB). Download it once:
+
+```bash
+curl -L "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/1/pose_landmarker_heavy.task" \
+  -o pose_landmarker.task
+```
+
+This file must be inside the `measure/` folder next to `main.py`.
+
+### Step 6 — Install dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -67,7 +78,7 @@ pip install -r requirements.txt
 
 This downloads all the required libraries (MediaPipe, FastAPI, OpenCV, etc.) into the `.venv` folder. The first time takes a few minutes — MediaPipe is large (~100 MB).
 
-### Step 5 — Start the service
+### Step 7 — Start the service
 
 ```bash
 uvicorn main:app --reload --port 8001
@@ -86,7 +97,7 @@ The service is now running at http://localhost:8001.
 
 `--reload` means the server automatically restarts when you edit the code — useful during development.
 
-### Step 6 — Verify it's working
+### Step 8 — Verify it's working
 
 Open a **new terminal tab** (keep the service running in the first one) and run:
 

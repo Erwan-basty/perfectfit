@@ -114,6 +114,9 @@ dist/
 secrets/
 
 # ──────────────────────────────────────────────
+# MediaPipe model files (large binaries — download separately, see measure/README.md)
+*.task
+
 # Logs & temp
 # ──────────────────────────────────────────────
 *.log
