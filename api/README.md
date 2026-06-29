@@ -128,6 +128,8 @@ Expected response:
 }
 ```
 
+![Successful scan response](../docs/screenshots/scan-success.png)
+
 ### Look up a profile by share code
 ```bash
 curl http://localhost:8080/profiles/PF-AB3K-XY7Q
