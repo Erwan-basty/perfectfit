@@ -1,2 +1,19 @@
 server:
   port: 8080
+
+spring.servlet.multipart:
+  max-file-size: 20MB
+  max-request-size: 50MB
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/perfectfit
+    username: perfectfit
+    password: perfectfit
+  jpa:
+    hibernate:
+      ddl-auto: update   # auto-creates/updates tables on startup (fine for dev)
+    show-sql: false
+
+measurement:
+  service-url: http://localhost:8001
