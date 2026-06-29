@@ -8,19 +8,17 @@ Accepts two photos (front + side, A-pose) and a height in cm. Uses MediaPipe pos
 
 ## Prerequisites — install these first
 
-### Python 3.10 or 3.11
-
-MediaPipe does not yet support Python 3.12+, so you need 3.10 or 3.11 specifically.
+### Python 3.10 or newer
 
 **Check what you have:**
 ```bash
 python3 --version
-# Should print: Python 3.10.x or Python 3.11.x
+# Should print: Python 3.10.x or newer
 ```
 
-**If you don't have the right version:**
-- Mac: `brew install python@3.11`
-- Windows/Linux: download from https://www.python.org/downloads/release/python-3119/
+**If not installed:**
+- Mac: `brew install python3`
+- Windows/Linux: download from https://www.python.org/downloads/
 
 ---
 
@@ -37,7 +35,7 @@ cd ~/perfectfit/measure
 A virtual environment is an isolated box for Python packages. It keeps the dependencies for this project separate from everything else on your computer.
 
 ```bash
-python3.11 -m venv .venv
+python3 -m venv .venv
 ```
 
 This creates a hidden folder called `.venv` inside `measure/`. You only do this **once**.
