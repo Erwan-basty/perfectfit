@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/perfectfit
+    url: jdbc:postgresql://localhost:5433/perfectfit
     username: perfectfit
     password: perfectfit
   jpa:
